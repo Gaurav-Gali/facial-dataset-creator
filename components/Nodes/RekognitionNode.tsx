@@ -179,7 +179,7 @@ const RekognitionNode = ({ id }: { id: string }) => {
             console.log("🧩 Final Mapped Data:", finalData);
 
             // ✅ Store data in the node
-            addData(id, finalData, "set");
+            addData(id, finalData.reverse(), "set");
             setProcessedCount(finalData.length);
 
             console.log("All Nodes : ", nodes);

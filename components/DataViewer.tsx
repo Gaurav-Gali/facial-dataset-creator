@@ -20,6 +20,37 @@ const DataViewer = () => {
         }
     };
 
+    const handleDownloadJson = () => {
+        try {
+            if (!viewer || viewer.length === 0) {
+                alert("No data available to download.");
+                return;
+            }
+
+            // Convert viewer data to a JSON string (pretty-printed)
+            const jsonData = JSON.stringify(viewer, null, 2);
+
+            // Create a Blob from the JSON data
+            const blob = new Blob([jsonData], { type: "application/json" });
+
+            // Create a download link dynamically
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "viewer_data.json"; // file name
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            console.log("✅ Downloaded viewer_data.json with", viewer.length, "entries.");
+        } catch (error) {
+            console.error("❌ Error while downloading JSON:", error);
+        }
+    };
+
     return (
         <div className="bg-white border-l h-screen w-[30vw] overflow-y-auto">
             {viewer.length === 0 ? (
@@ -32,7 +63,7 @@ const DataViewer = () => {
                     {/* Header */}
                     <div className="border-b py-2 px-4 flex items-center justify-between">
                         <p className="text-sm font-bold text-zinc-600">Data Viewer</p>
-                        <div className="flex cursor-pointer hover:text-zinc-400 text-zinc-600 items-center justify-center gap-1 text-sm">
+                        <div onClick={() => handleDownloadJson()} className="flex cursor-pointer hover:text-zinc-400 text-zinc-600 items-center justify-center gap-1 text-sm">
                             <ArrowDownToLine size={16} />
                             Download JSON
                         </div>
