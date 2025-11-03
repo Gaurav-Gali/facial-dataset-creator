@@ -128,18 +128,25 @@ export async function POST(req: Request) {
 
         // Step 2️⃣ Poll DynamoDB for new data
         console.log("⏳ Waiting for Lambda processing...");
-        const maxWaitTime = 40000;
-        const pollInterval = 5000;
+        const maxWaitTime = 60000;
+        const pollInterval = 10000;
+        const initialDelay = 5000;
         const startTime = Date.now();
-        let allItems: any[] = [];
+        let allItems = [];
+
+        await delay(initialDelay);
 
         while (Date.now() - startTime < maxWaitTime) {
             const res = await dynamoClient.send(new ScanCommand({ TableName: tableName }));
             allItems = res.Items?.map(unwrap) || [];
             console.log(`  📊 DynamoDB scan found ${allItems.length} total items`);
-            if (allItems.length > 0) break;
+
+            if (allItems.length > 0) break; // exit early if items are present
+
+            console.log(`  🔁 Waiting another ${pollInterval / 1000}s...`);
             await delay(pollInterval);
         }
+
 
         if (!allItems.length) {
             console.log("⚠️ No items found in DynamoDB after polling");
@@ -152,12 +159,11 @@ export async function POST(req: Request) {
             .sort(
                 (a, b) =>
                     new Date(b.Timestamp).getTime() - new Date(a.Timestamp).getTime()
-            )
-            .slice(0, files.length);
-
+            ).slice(0, files.length).reverse();
 
         console.log(`🎯 Selected ${sortedItems.length} most recent items from DynamoDB`);
 
+        console.log("All Items :", allItems.map(item => item.Emotion));
         console.log("Items (Emotions):", sortedItems.map(item => item.Emotion));
         console.log("Images:", uploadedKeys.reverse());
 

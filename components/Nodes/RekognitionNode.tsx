@@ -151,7 +151,7 @@ const RekognitionNode = ({ id }: { id: string }) => {
             console.log(`🎯 Using latest ${latestData.length} items out of ${rekognitionData.length} total`);
 
             /** ✅ Map metadata to local blob URLs */
-            const finalData: NodeDataType[] = imageUrls.reverse().map((blobUrl, idx) => {
+            const finalData: NodeDataType[] = imageUrls.map((blobUrl, idx) => {
                 const item = latestData[idx];
 
                 if (!item) {
@@ -179,7 +179,7 @@ const RekognitionNode = ({ id }: { id: string }) => {
             console.log("🧩 Final Mapped Data:", finalData);
 
             // ✅ Store data in the node
-            addData(id, finalData.reverse(), "set");
+            addData(id, finalData, "set");
             setProcessedCount(finalData.length);
 
             console.log("All Nodes : ", nodes);

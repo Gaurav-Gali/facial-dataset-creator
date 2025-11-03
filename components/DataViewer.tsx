@@ -5,7 +5,9 @@ import { ArrowDownToLine, ImageOff } from "lucide-react";
 import { useAtom } from "jotai";
 import { NodeDataType } from "@/types/NodeType";
 import { currentViewAtom } from "@/store/CurrentViewStore";
-import ReactJson from "react-json-view";
+
+import dynamic from "next/dynamic";
+const ReactJson = dynamic(() => import("react-json-view"), { ssr: false });
 
 const DataViewer = () => {
     const [viewer] = useAtom<NodeDataType[]>(currentViewAtom);
