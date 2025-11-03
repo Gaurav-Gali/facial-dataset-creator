@@ -3,7 +3,8 @@ import {Database, ImageUp} from "lucide-react";
 import { Handle, Position } from "@xyflow/react";
 import useAddData from "@/hooks/useAddData";
 import PlayButton from "@/components/PlayButton";
-
+import {useAtom} from "jotai";
+import {NodesAtom} from "@/store/NodesAndEdgesStore";
 
 const DataNode = ({id} : {id:string}) => {
     const [images, setImages] = useState<string[]>([]);
@@ -22,11 +23,15 @@ const DataNode = ({id} : {id:string}) => {
     const addData = useAddData();
     const [loading, setLoading] = useState(false);
 
+    const [nodes, setNodes] = useAtom(NodesAtom);
+
     const handleAddData = async () => {
         setLoading(true);
         await new Promise((r) => setTimeout(r, 500));
         addData(id, images);
         setLoading(false);
+
+        console.log("Images : ", nodes);
     };
 
 

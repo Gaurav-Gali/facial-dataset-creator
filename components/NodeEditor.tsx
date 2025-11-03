@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 "use client";
 
 import React, { useCallback, useEffect } from "react";
@@ -6,7 +8,7 @@ import {
     ReactFlowProvider,
     applyNodeChanges,
     applyEdgeChanges,
-    Background
+    Background, Controls
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 
@@ -130,6 +132,7 @@ export default function App() {
                     onNodeClick={(event) => event.stopPropagation()}
                     fitView
                 />
+                <Controls/>
             </ReactFlowProvider>
         </div>
     );

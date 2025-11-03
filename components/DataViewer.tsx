@@ -1,22 +1,24 @@
 "use client";
 
 import React, { useState } from "react";
-import {ArrowDownToLine, ImageOff} from "lucide-react";
+import { ArrowDownToLine, ImageOff } from "lucide-react";
 import { useAtom } from "jotai";
 import { NodeDataType } from "@/types/NodeType";
 import { currentViewAtom } from "@/store/CurrentViewStore";
+import ReactJson from "react-json-view";
 
 const DataViewer = () => {
     const [viewer] = useAtom<NodeDataType[]>(currentViewAtom);
-    const [selectedImage, setSelectedImage] = useState<NodeDataType | null>(
-        viewer.length > 0 ? viewer[0] : null
-    );
+    const [selectedImage, setSelectedImage] = useState<NodeDataType | null>(viewer[0] ? viewer[0] : null);
 
-    React.useEffect(() => {
-        if (viewer.length > 0 && !selectedImage) {
-            setSelectedImage(viewer[0]);
+
+    // 🔹 Function to handle image selection and log metadata
+    const handleSelectImage = (item: NodeDataType) => {
+        if (selectedImage?.id !== item.id) {
+            setSelectedImage(item);
+            console.log("🧠 Selected Image Metadata:", item.metadata);
         }
-    }, [viewer, selectedImage]);
+    };
 
     return (
         <div className="bg-white border-l h-screen w-[30vw] overflow-y-auto">
@@ -27,15 +29,15 @@ const DataViewer = () => {
                 </div>
             ) : (
                 <div className="flex flex-col">
-                    <div className={"border-b py-2 px-4 flex items-center justify-between"}>
-                        <p className={"text-sm font-bold text-zinc-600"}>
-                            Data Viewer
-                        </p>
-                        <div className={"flex cursor-pointer hover:text-zinc-400 text-zinc-600 items-center justify-center gap-1 text-sm"}>
-                            <ArrowDownToLine size={16}/>
-                            Download CSV
+                    {/* Header */}
+                    <div className="border-b py-2 px-4 flex items-center justify-between">
+                        <p className="text-sm font-bold text-zinc-600">Data Viewer</p>
+                        <div className="flex cursor-pointer hover:text-zinc-400 text-zinc-600 items-center justify-center gap-1 text-sm">
+                            <ArrowDownToLine size={16} />
+                            Download JSON
                         </div>
                     </div>
+
                     {/* Info Section */}
                     {selectedImage && (
                         <div className="border-b p-4 bg-white">
@@ -46,6 +48,10 @@ const DataViewer = () => {
                                         src={selectedImage.imageUrl}
                                         alt="Selected"
                                         className="w-32 h-32 object-cover rounded-lg border"
+                                        onError={(e) => {
+                                            (e.target as HTMLImageElement).src =
+                                                "https://via.placeholder.com/128x128?text=No+Image";
+                                        }}
                                     />
                                 </div>
 
@@ -54,14 +60,21 @@ const DataViewer = () => {
                                     <h3 className="text-sm font-semibold text-zinc-700 mb-2">
                                         Metadata
                                     </h3>
-                                    <div className="bg-white border rounded p-2 text-xs font-mono max-h-32 overflow-y-auto">
-                                        <pre className="whitespace-pre-wrap break-words text-zinc-600">
-                                            {JSON.stringify(
-                                                selectedImage.metadata || {},
-                                                null,
-                                                2
-                                            )}
-                                        </pre>
+                                    <div className="bg-white border border-zinc-200 rounded-lg max-h-72 overflow-y-auto">
+                                        <ReactJson
+                                            src={selectedImage.metadata || {}}
+                                            theme="rjv-default"
+                                            displayDataTypes={false}
+                                            displayObjectSize={false}
+                                            enableClipboard={true}
+                                            collapsed={false}
+                                            name={false}
+                                            style={{
+                                                padding: "12px",
+                                                fontSize: "11px",
+                                                fontFamily: "monospace",
+                                            }}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -73,23 +86,27 @@ const DataViewer = () => {
                         <h3 className="text-sm font-semibold text-zinc-700 mb-3">
                             All Images ({viewer.length})
                         </h3>
+
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {viewer.map((item) => (
                                 <div
                                     key={item.id}
-                                    onClick={() => setSelectedImage(item)}
+                                    onClick={() => handleSelectImage(item)}
                                     className={`relative group border rounded-lg overflow-hidden transition cursor-pointer ${
                                         selectedImage?.id === item.id
                                             ? "ring-2 ring-blue-500"
-                                            : ""
+                                            : "hover:ring-1 hover:ring-zinc-300"
                                     }`}
                                 >
                                     <img
                                         src={item.imageUrl}
                                         alt={item.imageUrl}
                                         className="w-full h-32 object-cover"
+                                        onError={(e) => {
+                                            (e.target as HTMLImageElement).src =
+                                                "https://via.placeholder.com/150x150?text=Not+Found";
+                                        }}
                                     />
-                                    {/* Hover overlay */}
                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs font-medium">
                                         View Details
                                     </div>

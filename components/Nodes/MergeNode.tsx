@@ -5,6 +5,7 @@ import PlayButton from "@/components/PlayButton";
 import {NodeDataType} from "@/types/NodeType";
 import useGetIncomming from "@/hooks/useGetIncomming";
 import useAddData from "@/hooks/useAddData";
+import { v4 as uuidv4 } from "uuid";
 
 const MergeNode = ({id}:{id:string}) => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -21,20 +22,29 @@ const MergeNode = ({id}:{id:string}) => {
         const inNodes = getIncomming(id);
 
         if (inNodes && inNodes.length > 0) {
-            // Merge all incoming node data
-            const mergedImageUrls: string[] = [];
+            // Merge all incoming node data as NodeDataType[]
+            const mergedData: NodeDataType[] = [];
 
             inNodes.forEach((node) => {
                 const nodeData: NodeDataType[] = node?.data?.data || [];
+
                 nodeData.forEach((item) => {
-                    mergedImageUrls.push(item.imageUrl);
+                    // Ensure proper NodeDataType structure
+                    mergedData.push({
+                        id: item.id || uuidv4(),
+                        imageUrl: item.imageUrl || "",
+                        metadata: item.metadata || {}, // Empty object if no metadata
+                    });
                 });
             });
 
-            // Add merged data to current node using the hook
-            addData(id, mergedImageUrls, "set");
-            setImageCount(mergedImageUrls.length);
+            console.log(`🔀 Merged ${mergedData.length} items from ${inNodes.length} nodes`);
+
+            // Add merged data to current node
+            addData(id, mergedData, "set");
+            setImageCount(mergedData.length);
         } else {
+            console.log("⚠️ No incoming nodes found");
             addData(id, [], "set");
             setImageCount(0);
         }
