@@ -5,6 +5,7 @@ import AddDataNode from "@/components/AddNodes/AddDataNode";
 import AddViewerNode from "@/components/AddNodes/AddViewerNode";
 import AddMergeNode from "@/components/AddNodes/AddMergeNode";
 import AddRekognitionNode from "@/components/AddNodes/AddrekognitionNode";
+import AddLimitNode from "@/components/AddNodes/AddLimitNode";
 
 const Page = () => {
     return (
@@ -14,6 +15,7 @@ const Page = () => {
                 <AddDataNode/>
                 <AddViewerNode/>
                 <AddMergeNode/>
+                <AddLimitNode/>
                 <AddRekognitionNode/>
             </div>
             <NodeEditor/>
