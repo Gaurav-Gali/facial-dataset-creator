@@ -20,7 +20,7 @@ const RekognitionNode = ({ id }: { id: string }) => {
     const getIncomming = useGetIncomming();
     const addData = useAddData();
 
-    /** 🧠 Step 1: Load images from incoming node */
+    /** Step 1: Load images from incoming node */
     const handleLoadImages = async () => {
         const inNodes = getIncomming(id);
         if (inNodes && inNodes.length > 0) {
@@ -37,7 +37,7 @@ const RekognitionNode = ({ id }: { id: string }) => {
         }
     };
 
-    /** 🖼️ Convert blob URL to base64 JPEG */
+    /**  Convert blob URL to base64 JPEG */
     const blobUrlToBase64Jpeg = async (blobUrl: string): Promise<string> => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -87,7 +87,7 @@ const RekognitionNode = ({ id }: { id: string }) => {
 
     const [nodes, setNodes] = useAtom(NodesAtom);
 
-    /** 🚀 Step 2: Handle Rekognition Upload Pipeline */
+    /** Step 2: Handle Rekognition Upload Pipeline */
     const handleRekognition = async () => {
         setLoading(true);
         setError(false);
@@ -110,7 +110,7 @@ const RekognitionNode = ({ id }: { id: string }) => {
             });
 
             const base64Images = await Promise.all(base64Promises);
-            console.log(`✅ All ${base64Images.length} images converted to base64`);
+            console.log(`All ${base64Images.length} images converted to base64`);
 
             // Prepare upload request with base64 data
             const files = base64Images.map((base64, i) => ({
@@ -119,7 +119,7 @@ const RekognitionNode = ({ id }: { id: string }) => {
                 blob: base64, // Now it's base64 data URL
             }));
 
-            console.log("📤 Sending to /api/upload...");
+            console.log("Sending to /api/upload...");
 
             // Send to API
             const apiRes = await fetch("/api/upload", {
@@ -130,32 +130,32 @@ const RekognitionNode = ({ id }: { id: string }) => {
 
             if (!apiRes.ok) {
                 const errorText = await apiRes.text();
-                console.error("❌ API Error:", errorText);
+                console.error("API Error:", errorText);
                 throw new Error(`API failed: ${apiRes.status} - ${errorText}`);
             }
 
             const rekognitionData = await apiRes.json();
 
             if (!rekognitionData || !rekognitionData.length) {
-                console.warn("⚠️ No data returned from API");
+                console.warn("No data returned from API");
                 setProcessedCount(0);
                 setLoading(false);
                 return;
             }
 
-            console.log("🧠 Received Rekognition Data:", rekognitionData.length, "items");
+            console.log("Received Rekognition Data:", rekognitionData.length, "items");
 
-            /** ✅ Only take the latest N items (matching number of uploaded images) */
+            /** Only take the latest N items (matching number of uploaded images) */
             const latestData = rekognitionData.slice(0, imageUrls.length);
 
             console.log(`🎯 Using latest ${latestData.length} items out of ${rekognitionData.length} total`);
 
-            /** ✅ Map metadata to local blob URLs */
+            /** Map metadata to local blob URLs */
             const finalData: NodeDataType[] = imageUrls.map((blobUrl, idx) => {
                 const item = latestData[idx];
 
                 if (!item) {
-                    console.warn(`⚠️ No metadata for image ${idx}`);
+                    console.warn(`No metadata for image ${idx}`);
                     return {
                         id: uuidv4(),
                         imageUrl: blobUrl,
@@ -176,17 +176,17 @@ const RekognitionNode = ({ id }: { id: string }) => {
                 };
             });
 
-            console.log("🧩 Final Mapped Data:", finalData);
+            console.log("Final Mapped Data:", finalData);
 
-            // ✅ Store data in the node
+            // Store data in the node
             addData(id, finalData, "set");
             setProcessedCount(finalData.length);
 
             console.log("All Nodes : ", nodes);
 
-            console.log(`✅ Successfully processed ${finalData.length} images`);
+            console.log(`Successfully processed ${finalData.length} images`);
         } catch (err) {
-            console.error("❌ RekognitionNode error:", err);
+            console.error("RekognitionNode error:", err);
             setError(true);
         } finally {
             setLoading(false);
