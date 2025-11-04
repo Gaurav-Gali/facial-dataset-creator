@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Handle, Position} from "@xyflow/react";
 import {View, Play} from "lucide-react";
 import PlayButton from "@/components/PlayButton";
@@ -11,23 +11,26 @@ const ViewerNode = ({id}:{id:string}) => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const [viewer, setViewer] = useAtom<NodeDataType[]>(currentViewAtom);
+
     const getIncomming = useGetIncomming();
+
+    // Compute incoming data directly using useMemo
+    const incomingData = useMemo(() => {
+        const inNodes = getIncomming(id);
+        if (inNodes && inNodes.length > 0) {
+            const firstNode = inNodes[0];
+            return firstNode?.data?.data || [];
+        }
+        return [];
+    }, [id, getIncomming]);
 
     const handleLoadViewer = async () => {
         setLoading(true);
 
         await new Promise((resolve) => setTimeout(resolve, 300));
 
-        const inNodes = getIncomming(id);
-
-        if (inNodes && inNodes.length > 0) {
-            const firstNode = inNodes[0];
-            const incomingData = firstNode?.data?.data || [];
-            console.log(viewer);
-            setViewer(incomingData);
-        } else {
-            setViewer([]);
-        }
+        // Store the incoming data in the viewer state
+        setViewer(incomingData);
 
         setLoading(false);
     };
@@ -53,13 +56,13 @@ const ViewerNode = ({id}:{id:string}) => {
 
             {/*Content*/}
             {
-                viewer.length === 0 ? (
+                incomingData.length === 0 ? (
                     <div className={"flex items-center justify-center text-zinc-500 text-[8px] py-2"}>
                         No images found.
                     </div>
                 ) : (
                     <div className={"flex items-center justify-center text-zinc-500 text-[8px] py-2"}>
-                        {viewer.length} images found
+                        {incomingData.length} images found
                     </div>
                 )
             }

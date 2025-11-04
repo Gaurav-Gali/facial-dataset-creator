@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowDownToLine, ImageOff } from "lucide-react";
 import { useAtom } from "jotai";
 import { NodeDataType } from "@/types/NodeType";
@@ -11,8 +11,16 @@ const ReactJson = dynamic(() => import("react-json-view"), { ssr: false });
 
 const DataViewer = () => {
     const [viewer] = useAtom<NodeDataType[]>(currentViewAtom);
-    const [selectedImage, setSelectedImage] = useState<NodeDataType | null>(viewer[0] ? viewer[0] : null);
+    const [selectedImage, setSelectedImage] = useState<NodeDataType | null>(null);
 
+    // 🔹 Update selectedImage whenever viewer changes
+    useEffect(() => {
+        if (viewer.length > 0) {
+            setSelectedImage(viewer[0]);
+        } else {
+            setSelectedImage(null);
+        }
+    }, [viewer]);
 
     // 🔹 Function to handle image selection and log metadata
     const handleSelectImage = (item: NodeDataType) => {

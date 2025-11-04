@@ -24,7 +24,7 @@ const DataNode = ({id} : {id:string}) => {
     const [loading, setLoading] = useState(false);
 
     const [nodes, setNodes] = useAtom(NodesAtom);
-
+[]
     const handleAddData = async () => {
         setLoading(true);
         await new Promise((r) => setTimeout(r, 500));

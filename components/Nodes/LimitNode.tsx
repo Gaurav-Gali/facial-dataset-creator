@@ -66,7 +66,7 @@ const LimitNode = ({ id }: { id: string }) => {
 
             {/* Limit Input */}
             <div className="flex items-center justify-between px-2 py-1 text-[9px]">
-                <label className="text-zinc-500">Limit:</label>
+                <label className="text-zinc-500">Limit</label>
                 <input
                     min={1}
                     value={limit}
