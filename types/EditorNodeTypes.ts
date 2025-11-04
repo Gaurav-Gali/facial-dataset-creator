@@ -4,6 +4,7 @@ import MergeNode from "@/components/Nodes/MergeNode";
 import RekognitionNode from "@/components/Nodes/RekognitionNode";
 import LimitNode from "@/components/Nodes/LimitNode";
 import FilterNode from "@/components/Nodes/FilterNode";
+import ConditionalNode from "@/components/Nodes/ConditionalNode";
 
 export const EditorNodeTypes = {
     'DataNode' : DataNode,
@@ -12,4 +13,5 @@ export const EditorNodeTypes = {
     'RekognitionNode' : RekognitionNode,
     'LimitNode' : LimitNode,
     'FilterNode' : FilterNode,
+    'ConditionalNode' : ConditionalNode,
 }

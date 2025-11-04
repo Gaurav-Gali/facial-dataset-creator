@@ -66,7 +66,7 @@ const FilterNode = ({ id }: { id: string }) => {
     const addData = useAddData();
     const [nodes] = useAtom(NodesAtom);
 
-    // 🔍 Extract incoming data whenever nodes change
+    // Extract incoming data whenever nodes change
     useEffect(() => {
         const inNodes = getIncomming(id);
 
@@ -323,7 +323,7 @@ const FilterNode = ({ id }: { id: string }) => {
             </div>
 
             {/* Summary Footer */}
-            <div className="flex items-center justify-center text-zinc-500 text-[10px] py-2 border-t bg-zinc-50">
+            <div className="flex items-center justify-center text-zinc-500 text-[10px] py-2 border-t bg-zinc-50/90">
                 {imageCount === 0
                     ? "No data processed"
                     : `${imageCount} items • ${Object.values(selectedPaths).filter(Boolean).length} keys`}
