@@ -26,7 +26,7 @@ function evaluateCondition(metadata: Record<string, any>, condition: string): bo
 const ConditionalNode = ({id}:{id:string}) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [imageCount, setImageCount] = useState<number>(0);
-    const [condition, setCondition] = useState<string>("item.Emotion === 'ANGRY' && item.EmotionConfidence >= 90");
+    const [condition, setCondition] = useState<string>("");
     const [error, setError] = useState<string>("");
 
     const getIncomming = useGetIncomming();
@@ -145,7 +145,7 @@ const ConditionalNode = ({id}:{id:string}) => {
                 <textarea
                     value={condition}
                     onChange={(e) => setCondition(e.target.value)}
-                    placeholder="e.g., item.Emotion === 'ANGRY'"
+                    placeholder="item.Emotion === 'ANGRY'"
                     className={`w-full text-[10px] px-2 py-1.5 border rounded ${
                         error ? 'border-red-300 bg-red-50' : 'border-zinc-200'
                     } focus:outline-none focus:ring-1 focus:ring-zinc-200 font-mono`}
@@ -160,11 +160,11 @@ const ConditionalNode = ({id}:{id:string}) => {
             <div className={"px-3 py-2 bg-zinc-50/90"}>
                 <div className={"flex items-center justify-between text-[10px] text-zinc-500"}>
                     <span>Input</span>
-                    <span className={"font-medium"}>{incomingCount} items</span>
+                    <span className={""}>{incomingCount} items</span>
                 </div>
                 <div className={"flex items-center justify-between text-[10px] text-zinc-500 mt-1"}>
                     <span>Output</span>
-                    <span className={"font-medium text-green-500"}>{imageCount} items</span>
+                    <span className={" text-green-500"}>{imageCount} items</span>
                 </div>
             </div>
         </div>

@@ -268,8 +268,8 @@ const FilterNode = ({ id }: { id: string }) => {
             {/* Header */}
             <div className="flex items-center justify-between gap-2 border-b px-3 py-2 bg-white">
                 <div className="flex items-center gap-2 text-zinc-700">
-                    <ListFilter className="text-emerald-500" size={14} />
-                    <p className="text-xs font-semibold">Filter Metadata</p>
+                    <ListFilter className="text-emerald-500" size={10} />
+                    <p className="text-xs">Filter Metadata</p>
                 </div>
                 <div onClick={handleFilter}>
                     <PlayButton loading={loading} />

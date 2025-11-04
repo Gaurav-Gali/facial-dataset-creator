@@ -8,18 +8,29 @@ import AddRekognitionNode from "@/components/AddNodes/AddrekognitionNode";
 import AddLimitNode from "@/components/AddNodes/AddLimitNode";
 import AddFilterNode from "@/components/AddNodes/AddFilterNode";
 import AddConditionalNode from "@/components/AddNodes/AddConditionalNode";
+import {Separator} from "@/components/ui/separator";
+import AddAnalyticsNode from "@/components/AddNodes/AddAnalyticsNode";
 
 const Page = () => {
     return (
         <div className={"flex"}>
             {/*Add Nodes*/}
-            <div className={"absolute space-y-2 top-5 left-5 z-50"}>
+            <div className={"absolute bg-white border rounded-full py-2 px-2 space-y-2 top-3 left-3 z-50"}>
                 <AddDataNode/>
+
+                <Separator/>
+
                 <AddViewerNode/>
                 <AddMergeNode/>
+
+                <Separator/>
+
                 <AddLimitNode/>
                 <AddFilterNode/>
                 <AddConditionalNode/>
+                <Separator/>
+
+                <AddAnalyticsNode/>
                 <AddRekognitionNode/>
             </div>
             <NodeEditor/>
