@@ -10,6 +10,8 @@ import AddFilterNode from "@/components/AddNodes/AddFilterNode";
 import AddConditionalNode from "@/components/AddNodes/AddConditionalNode";
 import {Separator} from "@/components/ui/separator";
 import AddAnalyticsNode from "@/components/AddNodes/AddAnalyticsNode";
+import AddSplitterNode from "@/components/AddNodes/AddSplitterNode";
+import AddQueryItemNode from "@/components/AddNodes/AddQueryItemNode";
 
 const Page = () => {
     return (
@@ -17,11 +19,13 @@ const Page = () => {
             {/*Add Nodes*/}
             <div className={"absolute bg-white border rounded-full py-2 px-2 space-y-2 top-3 left-3 z-50"}>
                 <AddDataNode/>
+                <AddViewerNode/>
 
                 <Separator/>
 
-                <AddViewerNode/>
                 <AddMergeNode/>
+                <AddSplitterNode/>
+                <AddQueryItemNode/>
 
                 <Separator/>
 
