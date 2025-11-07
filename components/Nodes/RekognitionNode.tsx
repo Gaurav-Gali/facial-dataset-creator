@@ -203,7 +203,7 @@ const RekognitionNode = ({ id }: { id: string }) => {
             <div className="flex items-center justify-between gap-2 border-b px-2 py-1">
                 <div className="flex items-center gap-1 text-zinc-600">
                     <Cpu className="text-red-500" size={10} />
-                    <p className="text-[10px]">Rekognition Node</p>
+                    <p className="text-[10px]">AWS Rekognition</p>
                 </div>
                 <div onClick={handleRekognition}>
                     <PlayButton loading={loading} />

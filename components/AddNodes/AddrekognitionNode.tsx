@@ -36,7 +36,7 @@ const AddRekognitionNode = () => {
                     </div>
                 </TooltipTrigger>
                 <TooltipContent side="right">
-                    <p>Add Rekognition Node</p>
+                    <p>Add AWS Rekognition Node</p>
                 </TooltipContent>
             </Tooltip>
         </TooltipProvider>
